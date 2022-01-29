@@ -3,24 +3,27 @@ import Axios from 'axios';
 
 import moment from 'moment';
 import { Divider, Avatar, Col, Row, Typography, Card } from 'antd';
-const {Title} = Typography;
+const { Title } = Typography;
 const { Meta } = Card;
 
-function LandingPage(props) {
+function SubscriptionPage() {
     const [VideoArray, setVideoArray] = useState([]);
 
     useEffect(() => {
-        Axios.get('/api/video/getVideos')
+        const subscriptionVariable = {
+            userFrom: localStorage.getItem('userId')
+        }
+
+        Axios.post('/api/video/getSubscriptionVideos', subscriptionVariable) // 무조건 post여야 작동한다.. 왜지?
             .then(response => {
                 if(response.data.success) {
-                    // console.log(response.data);
                     setVideoArray(response.data.videos);
                 } else {
                     alert("비디오 가져오기 실패");
                 }
             });
 
-    }, []); // 비어있으면 돔이 업데이트될 때 한번만
+    }, []);
 
     const renderCards = VideoArray.map((video, index) => {
         
@@ -50,7 +53,7 @@ function LandingPage(props) {
 
     return (
         <div>
-            <Title level={2}>Recommended</Title>
+            <Title level={2}>Subscription</Title>
             <Divider orientation="left"></Divider>
             
             <Row gutter={[32, 16]}>
@@ -60,4 +63,4 @@ function LandingPage(props) {
     )
 }
 
-export default LandingPage
+export default SubscriptionPage;

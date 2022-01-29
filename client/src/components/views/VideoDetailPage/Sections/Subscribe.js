@@ -48,6 +48,11 @@ function Subscribe(props) {
                 }
             })
         } else {
+            if (variableSubscribed.userTo == variableSubscribed.userFrom)
+            {
+                alert("자기 자신을 구독할 수는 없습니다.")
+                return;
+            }
             Axios.post('/api/subscribe/subscribe', variableSubscribed)
             .then(response => {
                 if(response.data.success){
